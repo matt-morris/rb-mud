@@ -1,20 +1,28 @@
-require 'socket'
+require "socket"
 
 class Server
-  def initialize(port=3333, host='localhost')
+  def initialize(port, host)
     @server = TCPServer.open(host, port)
-    @connections = {}
-    @clients = {}
+    run
   end
 
+  private
+ 
   def run
     loop do
       Thread.start(@server.accept) do |client|
-        request = client.gets.chomp
-        puts "received: #{request}"
+        client.puts "welcome to rb-mud..."
+        listen_user_messages(client)
       end
+    end.join
+  end
+ 
+  def listen_user_messages(client)
+    loop do
+      msg = client.gets.chomp
+      puts "received: #{msg}"
     end
   end
 end
-
-server = Server.new.run
+ 
+Server.new(3333, "localhost")
