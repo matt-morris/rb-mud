@@ -2,6 +2,7 @@ require "socket"
 
 class Server
   def initialize(port, host)
+    @connections = {}
     @server = TCPServer.open(host, port)
     run
   end
@@ -12,15 +13,18 @@ class Server
     loop do
       Thread.start(@server.accept) do |client|
         client.puts "welcome to rb-mud..."
-        listen_user_messages(client)
+        addr = Socket.unpack_sockaddr_in(client.getpeername)
+        client_id = "#{addr.last}:#{addr.first}".to_sym
+        @connections[client_id] = client
+        listen_user_messages(client_id, client)
       end
     end.join
   end
  
-  def listen_user_messages(client)
+  def listen_user_messages(client_id, client)
     loop do
       msg = client.gets.chomp
-      puts "received: #{msg}"
+      puts "#{client_id}: #{msg}"
     end
   end
 end
