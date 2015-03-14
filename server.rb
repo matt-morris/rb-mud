@@ -1,9 +1,11 @@
 require "socket"
 
 class Server
-  def initialize(port, host)
+  def initialize(port, host, game)
+    @game = game
     @connections = {}
     @server = TCPServer.open(host, port)
+    puts "listening on #{host}:#{port}..."
     run
   end
 
@@ -24,9 +26,7 @@ class Server
   def listen_user_messages(client_id, client)
     loop do
       msg = client.gets.chomp
-      puts "#{client_id}: #{msg}"
+      @game.post(client_id, msg)
     end
   end
 end
- 
-Server.new(3333, "localhost")
