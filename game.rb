@@ -3,15 +3,23 @@ require './character'
 class Game
   def initialize
     @characters = {
-      dubs: Character.new('dubs')
+      dubs: Character.new('dubs', 99, Float::INFINITY)
     }
   end
 
-  def login(name)
-    @characters[name.to_sym]
+  def login(client)
+    client.puts "what is your name?"
+    name = client.gets.chomp
+    if @characters[name.to_sym]
+      client.puts "login successful".green
+    else
+      client.puts "new character...".yellow
+      @characters[name.to_sym] = Character.new(name)
+    end
+    @characters[name.to_sym].name
   end
 
-  def post(id, msg)
-    puts "#{id} -> #{msg}"
+  def post(name, msg)
+    puts "#{name} -> #{msg}"
   end
 end
