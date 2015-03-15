@@ -1,6 +1,14 @@
+require './character'
+
 class Game
   def initialize
-    @characters = {}
+    @characters = {
+      dubs: Character.new('dubs')
+    }
+  end
+
+  def login(name)
+    @characters[name.to_sym]
   end
 
   def post(id, msg)
