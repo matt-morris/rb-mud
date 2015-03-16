@@ -3,5 +3,13 @@ require 'pry'
 require './server'
 require './game'
 
-game = Game.new
-Server.new(3333, "localhost", game)
+class System
+  attr_accessor :game, :server
+
+  def initialize
+    @game = Game.new
+    @server = Server.new(3333, "localhost", @game)
+  end
+end
+
+System.new
