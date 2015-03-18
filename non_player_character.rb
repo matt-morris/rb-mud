@@ -5,3 +5,5 @@ class NonPlayerCharacter
     @name, @level, @hp = name, level, hp
   end
 end
+
+Npc = NonPlayerCharacter
