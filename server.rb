@@ -2,16 +2,16 @@ require "socket"
 require "colorize"
 
 class Server
-  def initialize(port, host, system)
-    @system = system
+  def initialize(port, host)
     @connections = {}
     @server = TCPServer.open(host, port)
     puts "listening on #{host}:#{port}..."
     run
   end
 
-  def push_user_message_to_client(client_id, msg)
-    @connections[client_id][:client].puts(msg)
+  def push_user_message_to_client(name, msg)
+    # @connections[client_id][:client].puts(msg)
+    @connections.invert(name: name)[:client_id].puts(msg)
   end
 
   private
@@ -22,7 +22,8 @@ class Server
         client.puts "welcome to #{'rb-mud'.red}..."
         addr = Socket.unpack_sockaddr_in(client.getpeername)
         client_id = "#{addr.last}:#{addr.first}".to_sym
-        name = @system.game.login(client)
+        # binding.pry
+        name = $game.login(client)
         @connections[client_id] = { name: name, client: client }
         listen_user_messages(client_id)
       end
@@ -32,7 +33,7 @@ class Server
   def listen_user_messages(client_id)
     loop do
       msg = @connections[client_id][:client].gets.chomp
-      @system.game.post(@connections[client_id][:name], msg)
+      $game.post(@connections[client_id][:name], msg)
     end
   end
 end

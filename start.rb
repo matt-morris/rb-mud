@@ -7,9 +7,9 @@ class System
   attr_accessor :game, :server
 
   def initialize
-    @game = Game.new(self)
-    @server = Server.new(3333, "localhost", self)
+    $game = Game.new
+    $server = Server.new(3333, "localhost")
   end
 end
 
-System.new
+system = System.new
