@@ -3,7 +3,4 @@ require 'pry'
 require './server'
 require './game'
 
-$game = Game.new
-Server.new(3333, "localhost")
-
-System.new
+Server.new(3333, "localhost", Game.new)
