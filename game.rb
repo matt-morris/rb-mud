@@ -30,7 +30,8 @@ class Game
     target_name = tokens.shift
     target = @characters[target_name.to_sym]
     # client.puts "i don't see #{target_name.red} here." unless target
-    binding.pry
-    $server.push_user_message_to_client(target_name, tokens.join(' '))
+    # binding.pry
+    # $server.push_user_message_to_client(target_name, tokens.join(' '))
+    Server.push_user_message_to_client(target_name, tokens.join(' '))
   end
 end
