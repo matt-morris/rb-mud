@@ -10,8 +10,9 @@ class Server
   end
 
   def self.push_user_message_to_client(name, msg)
-    # binding.pry
-    @@connections.invert(name: name)[:client_id].puts(msg)
+    connection = nil
+    @@connections.select { |_, conn| connection = conn[:client] if conn[:name] == name }
+    connection.puts msg if connection
   end
 
   private
@@ -24,7 +25,6 @@ class Server
         client_id = "#{addr.last}:#{addr.first}".to_sym
         name = $game.login(client)
         @@connections[client_id] = { name: name, client: client }
-        # binding.pry
         Server.listen_user_messages(client_id)
       end
     end.join
@@ -32,7 +32,6 @@ class Server
  
   def self.listen_user_messages(client_id)
     loop do
-      # binding.pry
       msg = @@connections[client_id][:client].gets.chomp
       $game.post(@@connections[client_id][:name], msg)
     end

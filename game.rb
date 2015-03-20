@@ -23,15 +23,13 @@ class Game
     puts "#{name} -> #{msg}"
     tokens = msg.split
     command = tokens.shift
-    tell tokens if command == 'tell'
+    tell(name, tokens) if command == 'tell'
   end
 
-  def tell(tokens)
+  def tell(actor, tokens)
     target_name = tokens.shift
     target = @characters[target_name.to_sym]
-    # client.puts "i don't see #{target_name.red} here." unless target
-    # binding.pry
-    # $server.push_user_message_to_client(target_name, tokens.join(' '))
+    Server.push_user_message_to_client(actor, "i don't see #{target_name.red} here.") unless target
     Server.push_user_message_to_client(target_name, tokens.join(' '))
   end
 end
