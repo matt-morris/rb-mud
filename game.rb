@@ -7,7 +7,7 @@ class Game
       home: Location.new('home', "it's where the heart is...")
     }
     @characters = {
-      dubs: Character.new('dubs', 99, Float::INFINITY, location_id: @locations[:home])
+      dubs: Character.new('dubs', 99, Float::INFINITY, location: @locations[:home])
     }
   end
 
@@ -18,7 +18,7 @@ class Game
       client.puts "welcome back, #{name.green}."
     else
       client.puts "#{'new character...'.yellow} #{name}!"
-      @characters[name.to_sym] = Character.new(name)
+      @characters[name.to_sym] = Character.new(name, location: @locations[:home])
     end
     @characters[name.to_sym].name
   end
