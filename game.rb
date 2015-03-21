@@ -1,9 +1,13 @@
 require './character'
+require './location'
 
 class Game
   def initialize
+    @locations = {
+      home: Location.new('home', "it's where the heart is...")
+    }
     @characters = {
-      dubs: Character.new('dubs', 99, Float::INFINITY)
+      dubs: Character.new('dubs', 99, Float::INFINITY, location_id: @locations[:home])
     }
   end
 
