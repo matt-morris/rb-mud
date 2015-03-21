@@ -29,11 +29,19 @@ class Game
     tokens = msg.split
     command = tokens.shift
     tell(actor, tokens) if command == 'tell'
+    look(actor, tokens) if command == 'look'
   end
 
   def tell(actor, tokens)
     target = @characters[tokens.shift.to_sym] if tokens.size > 0
     Server.post(actor.name, "you don't see #{target_name.red} here.") unless target
     Server.post(target.name, "#{actor.name.blue} tells you \"#{tokens.join(' ')}\"")
+  end
+
+  def look(actor, tokens)
+    target = @characters[tokens.shift.to_sym] if tokens.size > 0
+    target ||= actor.location
+    # binding.pry
+    Server.post(actor.name, target.description)
   end
 end
