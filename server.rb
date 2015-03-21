@@ -6,7 +6,7 @@ class Server
     @@game = game
     @@connections = {}
     @server = TCPServer.open(host, port)
-    puts "listening on #{host}:#{port}..."
+    puts "listening on #{host.blue}:#{port.to_s.magenta}..."
     run
   end
 
@@ -17,7 +17,7 @@ class Server
   end
 
   private
- 
+
   def run
     loop do
       Thread.start(@server.accept) do |client|
