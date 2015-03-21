@@ -24,16 +24,16 @@ class Game
   end
 
   def post(name, msg)
-    puts "#{name} -> #{msg}"
+    puts "#{name.yellow} -> #{msg.blue}"
+    actor = @characters[name.to_sym]
     tokens = msg.split
     command = tokens.shift
-    tell(name, tokens) if command == 'tell'
+    tell(actor, tokens) if command == 'tell'
   end
 
   def tell(actor, tokens)
-    target_name = tokens.shift
-    target = @characters[target_name.to_sym]
-    Server.post(actor, "i don't see #{target_name.red} here.") unless target
-    Server.post(target_name, tokens.join(' '))
+    target = @characters[tokens.shift.to_sym] if tokens.size > 0
+    Server.post(actor.name, "you don't see #{target_name.red} here.") unless target
+    Server.post(target.name, "#{actor.name.blue} tells you \"#{tokens.join(' ')}\"")
   end
 end
