@@ -29,7 +29,7 @@ class Game
   def tell(actor, tokens)
     target_name = tokens.shift
     target = @characters[target_name.to_sym]
-    Server.push_user_message_to_client(actor, "i don't see #{target_name.red} here.") unless target
-    Server.push_user_message_to_client(target_name, tokens.join(' '))
+    Server.post(actor, "i don't see #{target_name.red} here.") unless target
+    Server.post(target_name, tokens.join(' '))
   end
 end
