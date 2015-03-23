@@ -32,6 +32,8 @@ class Game
     look(actor, tokens) if command == 'look'
   end
 
+  private
+
   def tell(actor, tokens)
     target = @characters[tokens.shift.to_sym] if tokens.size > 0
     Server.post(actor.name, "you don't see #{target_name.red} here.") unless target
@@ -39,9 +41,18 @@ class Game
   end
 
   def look(actor, tokens)
-    target = @characters[tokens.shift.to_sym] if tokens.size > 0
+    if tokens.size > 0
+      pattern = tokens.shift
+      target = @characters[pattern.to_sym]
+      target ||= actor.location.contents.select { |c| c.name == pattern }.first
+    end
     target ||= actor.location
     # binding.pry
-    Server.post(actor.name, target.description)
+    Server.post(actor.name, "#{target.name.blue}: #{target.description}")
+    if target.is_a? Location
+      target.contents.each do |c|
+        Server.post(actor.name, "#{c.name.blue}: #{c.description}")
+      end
+    end
   end
 end
