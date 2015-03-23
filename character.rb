@@ -4,7 +4,7 @@ class Character
   def initialize(name, level = 1, hp = 1, **options)
     @name, @level, @hp = name, level, hp
     @description = options[:description] || "a generic character."
-    @location = options[:location]
+    set_location(options[:location])
   end
 
   private
