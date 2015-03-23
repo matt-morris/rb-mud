@@ -6,4 +6,12 @@ class Character
     @description = options[:description] || "a generic character."
     @location = options[:location]
   end
+
+  private
+
+  def set_location(location)
+    @location.contents.reject! { |c| c == self } unless @location.nil?
+    @location = location
+    location.contents << self unless location.nil?
+  end
 end
