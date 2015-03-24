@@ -7,8 +7,6 @@ class Character
     set_location(options[:location])
   end
 
-  private
-
   def set_location(location)
     @location.contents.reject! { |c| c == self } unless @location.nil?
     @location = location
