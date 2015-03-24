@@ -30,6 +30,7 @@ class Game
     command = tokens.shift
     tell(actor, tokens) if command == 'tell'
     look(actor, tokens) if command == 'look'
+    travel(actor, tokens) if command == 'travel'
   end
 
   private
@@ -53,6 +54,16 @@ class Game
       target.contents.each do |c|
         Server.post(actor.name, "#{c.name.blue}: #{c.description}")
       end
+    end
+  end
+
+  def travel(actor, tokens)
+    unless tokens.size > 0
+      Server.post(actor.name, "need a little #{'more info'.blue} than that...")
+    else
+      target = actor.location.exits[tokens.shift.to_sym]
+      actor.set_location(target) if target
+      look(actor, '')
     end
   end
 end
