@@ -4,7 +4,8 @@ require './location'
 class Game
   def initialize
     @locations = {
-      home: Location.new('home', "it's where the heart is...")
+      home: Location.new('home', "it's where the heart is...",
+                         exits: { north: Location.new('office', "a small, utilitarian room.") })
     }
     @characters = {
       dubs: Character.new('dubs', 99, Float::INFINITY, location: @locations[:home])
