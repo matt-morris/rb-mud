@@ -38,7 +38,11 @@ class Game
   private
 
   def tell(actor, tokens)
-    target = @characters[tokens.shift.to_sym] if tokens.size > 0
+    target_name = tokens.shift
+    if target_name
+      target = @characters[target_name.to_sym]
+      target = nil unless actor.location.contents.select { |c| c == target }.size > 0
+    end
     Server.post(actor.name, "you don't see #{target_name.red} here.") unless target
     Server.post(target.name, "#{actor.name.blue} tells you \"#{tokens.join(' ')}\"")
   end
