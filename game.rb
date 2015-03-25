@@ -31,6 +31,7 @@ class Game
     tell(actor, tokens) if command == 'tell'
     look(actor, tokens) if command == 'look'
     travel(actor, tokens) if command == 'travel'
+    travel(actor, tokens) if command == 'go'
   end
 
   private
