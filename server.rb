@@ -26,7 +26,7 @@ class Server
         client_id = "#{addr.last}:#{addr.first}".to_sym
         name = @@game.login(client)
         @@connections[client_id] = { name: name, client: client }
-        Server.listen(client_id)
+        self.class.listen(client_id)
       end
     end.join
   end
