@@ -11,17 +11,12 @@ class Server
   end
 
   def self.post(name, msg)
-    connection = Server.find_connection(name)
+    connection = nil
+    @@connections.select { |_, conn| connection = conn[:client] if conn[:name] == name }
     connection.puts msg if connection
   end
 
   private
-
-  def self.find_connection(name)
-    connection = nil
-    @@connections.select { |_, conn| connection = conn[:client] if conn[:name] == name }
-    connection
-  end
 
   def run
     loop do
